@@ -1,0 +1,12 @@
+#!/bin/sh
+SRC=$0
+CWD=$PWD
+cd "$(dirname "$SRC")"
+LINK=$(readlink "$(basename "$SRC")")
+while [[ -n "$LINK" ]]; do
+    cd "$(dirname "$LINK")"
+    LINK=$(readlink "$(basename "$SRC")")
+done
+SRC_PATH="$PWD/src"
+cd "$CWD"
+PYTHON_PATH=$SRC_PATH exec "$SRC_PATH/../venv/bin/python3" "$SRC_PATH/slack_reddit.py" "$@"
