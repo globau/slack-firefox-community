@@ -36,6 +36,9 @@ def notify(url: str, post: Post) -> None:
     }
     logger.debug(json.dumps(payload, indent=2, sort_keys=True))
 
+    if url == "DEBUG":
+        return
+
     try:
         req = url_request.Request(url, method="POST", data=json.dumps(payload).encode())
         url_request.urlopen(req)

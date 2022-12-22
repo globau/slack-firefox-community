@@ -28,6 +28,8 @@ def subreddit_type(arg: str) -> str:
 
 
 def webhook_type(arg: str) -> str:
+    if arg == "DEBUG":
+        return arg
     url = url_parse.urlparse(arg)
     if (
         url.scheme != "https"

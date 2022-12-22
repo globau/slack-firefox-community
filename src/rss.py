@@ -5,10 +5,14 @@ from typing import Any, Dict
 
 import bs4
 
+from cli import logger
+
 
 @functools.total_ordering
 class Post:
     def __init__(self, entry: Dict[str, Any]) -> None:
+        logger.debug(entry)
+
         self.id: str = entry["id"]
         self.title: str = entry["title"]
         self.link: str = entry["link"]
