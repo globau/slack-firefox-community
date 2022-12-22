@@ -16,7 +16,10 @@ class Post:
         self.id: str = entry["id"]
         self.title: str = entry["title"]
         self.link: str = entry["link"]
-        self.author: str = entry["author_detail"]["name"]
+        if "author_detail" in entry:
+            self.author: str = entry["author_detail"]["name"]
+        else:
+            self.author = "[deleted]"
         self.published: float = time.mktime(entry["published_parsed"])
 
         self.media: str = "https://www.redditstatic.com/new-icon.png"
