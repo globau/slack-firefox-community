@@ -49,7 +49,7 @@ def main() -> None:
         posts.extend(feed.new_posts())
 
     for post in sorted(posts):
-        print(post)
+        logger.info(post)
         slack.notify(args.webhook_url, post)
         post.mark_as_notified()
 
