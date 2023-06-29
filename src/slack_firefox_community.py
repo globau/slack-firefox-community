@@ -6,6 +6,7 @@ import cli
 import slack
 from cli import logger
 from sources.fedia import FediaFeed
+from sources.lemmy import LemmyFeed
 from sources.reddit import RedditFeed
 
 
@@ -36,11 +37,8 @@ def main() -> None:
         logger.setLevel(logging.DEBUG)
 
     posts = []
-    for feed in (RedditFeed(), FediaFeed()):
+    for feed in (RedditFeed(), FediaFeed(), LemmyFeed()):
         posts.extend(feed.new_posts())
-
-    for post in sorted(posts):
-        print(post)
 
     for post in sorted(posts):
         slack.notify(args.webhook_url, post)
