@@ -11,7 +11,7 @@ from feed import Feed, Post
 
 class RedditPost(Post):
     def __init__(self, entry: dict[str, Any]) -> None:
-        media: str = "https://www.redditstatic.com/new-icon.png"
+        media = "https://www.redditstatic.com/new-icon.png"
         try:
             media = entry["media_thumbnail"][0]["url"]
         except (KeyError, IndexError):
@@ -37,6 +37,6 @@ class RedditFeed(Feed):
         super().__init__("reddit-firefox")
 
     def posts(self) -> list[Post]:
-        logger.info("fetching r/firefox")
+        logger.info("fetching reddit.com/r/firefox")
         rss = feedparser.parse("https://reddit.com/r/firefox.rss")
         return [RedditPost(entry) for entry in rss.entries]

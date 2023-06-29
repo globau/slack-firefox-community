@@ -5,6 +5,7 @@ import urllib.parse as url_parse
 import cli
 import slack
 from cli import logger
+from sources.fedia import FediaFeed
 from sources.reddit import RedditFeed
 
 
@@ -34,8 +35,12 @@ def main() -> None:
     elif args.debug:
         logger.setLevel(logging.DEBUG)
 
-    feed = RedditFeed()
-    posts = feed.new_posts()
+    posts = []
+    for feed in (RedditFeed(), FediaFeed()):
+        posts.extend(feed.new_posts())
+
+    for post in sorted(posts):
+        print(post)
 
     for post in sorted(posts):
         slack.notify(args.webhook_url, post)
