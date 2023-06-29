@@ -8,6 +8,7 @@ from cli import logger
 from sources.fedia import FediaFeed
 from sources.hacker_news import HackerNewsFeed
 from sources.lemmy import LemmyFeed
+from sources.lobsters import LobstersFeed
 from sources.reddit import RedditFeed
 
 
@@ -38,7 +39,13 @@ def main() -> None:
         logger.setLevel(logging.DEBUG)
 
     posts = []
-    for feed in (RedditFeed(), FediaFeed(), LemmyFeed(), HackerNewsFeed()):
+    for feed in (
+        RedditFeed(),
+        FediaFeed(),
+        LemmyFeed(),
+        HackerNewsFeed(),
+        LobstersFeed(),
+    ):
         posts.extend(feed.new_posts())
 
     for post in sorted(posts):
