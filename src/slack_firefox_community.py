@@ -51,7 +51,7 @@ def main() -> None:
     for post in sorted(posts):
         print(post)
         slack.notify(args.webhook_url, post)
-        feed.mark_as_notified(post)
+        post.mark_as_notified()
 
 
 if __name__ == "__main__":

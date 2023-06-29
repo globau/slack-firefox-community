@@ -9,7 +9,7 @@ from feed import Feed, Post
 
 
 class LemmyPost(Post):
-    def __init__(self, entry: dict[str, Any]) -> None:
+    def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
         media = "https://lemmy.ml/pictrs/image/fa6d9660-4f1f-4e90-ac73-b897216db6f3.png"
 
         content = entry["summary"]
@@ -17,6 +17,7 @@ class LemmyPost(Post):
         content = re.sub(r"^.+?<p>", "<p>", content)
 
         super().__init__(
+            feed=feed,
             identifier=entry["id"],
             published=time.mktime(entry["published_parsed"]),
             title=entry["title"],
@@ -33,4 +34,4 @@ class LemmyFeed(Feed):
     def posts(self) -> list[Post]:
         logger.info("fetching lemmy.ml/c/firefox")
         rss = feedparser.parse("https://lemmy.ml/feeds/c/firefox.xml?sort=New")
-        return [LemmyPost(entry) for entry in rss.entries]
+        return [LemmyPost(self, entry) for entry in rss.entries]

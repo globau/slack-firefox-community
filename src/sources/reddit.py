@@ -10,7 +10,7 @@ from feed import Feed, Post
 
 
 class RedditPost(Post):
-    def __init__(self, entry: dict[str, Any]) -> None:
+    def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
         media = "https://www.redditstatic.com/new-icon.png"
         try:
             media = entry["media_thumbnail"][0]["url"]
@@ -23,6 +23,7 @@ class RedditPost(Post):
         content = re.sub(r" (submitted by /)", "\n\n\\1", content)
 
         super().__init__(
+            feed=feed,
             identifier=entry["id"],
             published=time.mktime(entry["published_parsed"]),
             title=entry["title"],
@@ -39,4 +40,4 @@ class RedditFeed(Feed):
     def posts(self) -> list[Post]:
         logger.info("fetching reddit.com/r/firefox")
         rss = feedparser.parse("https://reddit.com/r/firefox.rss")
-        return [RedditPost(entry) for entry in rss.entries]
+        return [RedditPost(self, entry) for entry in rss.entries]

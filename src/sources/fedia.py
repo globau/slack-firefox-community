@@ -8,8 +8,9 @@ from feed import Feed, Post
 
 
 class FediaPost(Post):
-    def __init__(self, entry: dict[str, Any]) -> None:
+    def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
         super().__init__(
+            feed=feed,
             identifier=entry["id"],
             published=time.mktime(entry["published_parsed"]),
             title=entry["title"],
@@ -26,4 +27,4 @@ class FediaFeed(Feed):
     def posts(self) -> list[Post]:
         logger.info("fetching fedia.io/m/firefox")
         rss = feedparser.parse("https://fedia.io/rss?magazine=firefox")
-        return [FediaPost(entry) for entry in rss.entries]
+        return [FediaPost(self, entry) for entry in rss.entries]

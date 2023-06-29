@@ -9,8 +9,9 @@ from feed import Feed, Post
 
 
 class HackerNewsPost(Post):
-    def __init__(self, entry: dict[str, Any]) -> None:
+    def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
         super().__init__(
+            feed=feed,
             identifier=entry["id"],
             published=time.mktime(entry["published_parsed"]),
             title=entry["title"],
@@ -31,4 +32,4 @@ class HackerNewsFeed(Feed):
     def posts(self) -> list[Post]:
         logger.info("fetching hacker-news")
         rss = feedparser.parse("https://news.ycombinator.com/rss")
-        return [HackerNewsPost(entry) for entry in rss.entries if _include(entry)]
+        return [HackerNewsPost(self, entry) for entry in rss.entries if _include(entry)]

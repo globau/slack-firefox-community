@@ -10,6 +10,7 @@ class Post:
     def __init__(
         self,
         *,
+        feed: "Feed",
         identifier: str,
         published: float,
         title: str,
@@ -17,6 +18,7 @@ class Post:
         media: str,
         content: str,
     ) -> None:
+        self.feed = feed
         self.id = identifier
         self.published = published
         self.title = title
@@ -34,6 +36,9 @@ class Post:
 
     def __repr__(self) -> str:
         return f"{self.id} {self.title}"
+
+    def mark_as_notified(self) -> None:
+        self.feed.mark_as_notified(self)
 
 
 class Feed:
