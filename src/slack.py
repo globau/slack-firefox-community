@@ -3,7 +3,7 @@ import sys
 import urllib.request as url_request
 
 from cli import logger
-from rss import Post
+from feed import Post
 
 
 def _escape(value: str) -> str:

@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 import traceback
-from typing import Callable
+from collections.abc import Callable
 
 logger = logging.getLogger("slack-reddit")
 
@@ -11,8 +11,8 @@ class Error(Exception):
     pass
 
 
-class _StreamHandler(logging.StreamHandler):  # type: ignore
-    def handleError(self, record: logging.LogRecord) -> None:
+class _StreamHandler(logging.StreamHandler):
+    def handleError(self, record: logging.LogRecord) -> None:  # noqa: N802
         exc_info = sys.exc_info()[0]
         if exc_info and exc_info.__name__ == BrokenPipeError.__name__:
             sys.exit(0)
@@ -100,7 +100,7 @@ def main(main_func: Callable) -> None:
                 logger.error(e.strerror or e)
         sys.exit(1)
 
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:  # noqa: BLE001
         # only show stack when debugging
         if logger.isEnabledFor(logging.DEBUG):
             logger.exception(e)

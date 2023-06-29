@@ -9,4 +9,4 @@ while [[ -n "$LINK" ]]; do
 done
 SRC_PATH="$PWD/src"
 cd "$CWD"
-PYTHON_PATH=$SRC_PATH exec "$SRC_PATH/../venv/bin/python3" "$SRC_PATH/slack_reddit.py" "$@"
+PYTHON_PATH=$SRC_PATH exec "$SRC_PATH/../venv/bin/python3" "$SRC_PATH/slack_firefox_community.py" "$@"

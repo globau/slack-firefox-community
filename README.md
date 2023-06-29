@@ -1,4 +1,3 @@
-# Slack-Reddit
+# Slack-Firefox-Community
 
-Consumes a subreddit's RSS feed and generates Slack messages formatted nicer
-than Slack's RSS application.
+Pull posts from various community forums vis RSS and notify a Slack channel.

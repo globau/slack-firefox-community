@@ -1,8 +1,8 @@
 display_information:
-  name: Reddit RSS
+  name: Firefox Community RSS
 features:
   bot_user:
-    display_name: Reddit RSS
+    display_name: Firefox Community RSS
     always_online: false
 oauth_config:
   scopes:
