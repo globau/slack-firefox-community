@@ -12,10 +12,6 @@ class LemmyPost(Post):
     def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
         media = "https://lemmy.ml/pictrs/image/fa6d9660-4f1f-4e90-ac73-b897216db6f3.png"
 
-        content = entry["summary"]
-        content = re.sub(r"^.+?<br />", "", content)
-        content = re.sub(r"^.+?<p>", "<p>", content)
-
         super().__init__(
             feed=feed,
             identifier=entry["id"],
@@ -23,7 +19,7 @@ class LemmyPost(Post):
             title=entry["title"],
             link=entry["link"],
             media=media,
-            content=content,
+            content="",
         )
 
 
