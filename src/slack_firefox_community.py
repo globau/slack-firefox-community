@@ -9,7 +9,6 @@ from sources.fedia import FediaFeed
 from sources.hacker_news import HackerNewsFeed
 from sources.lemmy import LemmyFeed
 from sources.lobsters import LobstersFeed
-from sources.reddit import RedditFeed
 
 
 def webhook_type(arg: str) -> str:
@@ -40,7 +39,6 @@ def main() -> None:
 
     posts = []
     for feed in (
-        RedditFeed(),
         FediaFeed(),
         LemmyFeed(),
         HackerNewsFeed(),
