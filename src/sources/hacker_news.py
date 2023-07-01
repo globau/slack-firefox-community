@@ -1,5 +1,6 @@
 import re
 import time
+import urllib.parse as url_parse
 from typing import Any
 
 import feedparser
@@ -10,9 +11,11 @@ from feed import Feed, Post
 
 class HackerNewsPost(Post):
     def __init__(self, feed: Feed, entry: dict[str, Any]) -> None:
+        url = url_parse.urlparse(entry["comments"])
+        qs = url_parse.parse_qs(url.query)
         super().__init__(
             feed=feed,
-            identifier=entry["id"],
+            identifier=qs["id"][0],
             published=time.mktime(entry["published_parsed"]),
             title=entry["title"],
             link=entry["link"],
