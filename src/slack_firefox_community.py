@@ -12,8 +12,9 @@ from sources.lobsters import LobstersFeed
 from sources.reddit import RedditFeed
 
 
-def webhook_type(arg: str) -> str:
-    return arg
+def webhook_type(arg: str) -> str | None:
+    if arg == "DEBUG":
+        return None
     url = url_parse.urlparse(arg)
     if (
         url.scheme != "https"
@@ -30,6 +31,7 @@ def main() -> None:
     parser.add_argument(
         "webhook_url", type=webhook_type, help="slack incoming webhook url"
     )
+    parser.add_argument("--keep-unread", action="store_true")
     verbosity = parser.add_mutually_exclusive_group()
     verbosity.add_argument("--quiet", "-q", action="store_true", help="less output")
     verbosity.add_argument("--debug", "-d", action="store_true", help="more output")
@@ -51,9 +53,10 @@ def main() -> None:
 
     for post in sorted(posts):
         logger.info(post)
-        continue
-        slack.notify(args.webhook_url, post)
-        post.mark_as_notified()
+        if args.webhook_url:
+            slack.notify(args.webhook_url, post)
+        if not args.keep_unread:
+            post.mark_as_notified()
 
 
 if __name__ == "__main__":

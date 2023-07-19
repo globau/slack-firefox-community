@@ -26,6 +26,8 @@ class Post:
         self.media = media
         self.content = content
 
+        assert self.id
+
     def __eq__(self, other: object) -> bool:
         assert isinstance(other, Post)
         return self.id == other.id
@@ -75,8 +77,12 @@ class Feed:
                 new_posts.append(post)
 
         # remove stale state entries
-        published_posts = set(published.keys())
-        stale_posts = published_posts - current_posts
+        now = datetime.now().date()
+        stale_posts = []
+        for identifier, timestamp_str in published.items():
+            date = datetime.strptime(timestamp_str[0:10], "%Y-%m-%d").date()
+            if (now - date).days > 90:
+                stale_posts.append(identifier)
         if stale_posts:
             for post_id in stale_posts:
                 del published[post_id]
