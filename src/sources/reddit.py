@@ -35,9 +35,9 @@ class RedditPost(Post):
 
 class RedditFeed(Feed):
     def __init__(self) -> None:
-        super().__init__("reddit-firefox")
+        super().__init__("reddit-mozillafirefox")
 
     def posts(self) -> list[Post]:
-        logger.info("fetching reddit.com/r/firefox")
-        rss = feedparser.parse("https://reddit.com/r/firefox.rss")
+        logger.info("fetching reddit.com/r/mozillafirefox")
+        rss = feedparser.parse("https://reddit.com/r/mozillafirefox.rss")
         return [RedditPost(self, entry) for entry in rss.entries]

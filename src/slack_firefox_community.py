@@ -9,9 +9,11 @@ from sources.fedia import FediaFeed
 from sources.hacker_news import HackerNewsFeed
 from sources.lemmy import LemmyFeed
 from sources.lobsters import LobstersFeed
+from sources.reddit import RedditFeed
 
 
 def webhook_type(arg: str) -> str:
+    return arg
     url = url_parse.urlparse(arg)
     if (
         url.scheme != "https"
@@ -40,14 +42,16 @@ def main() -> None:
     posts = []
     for feed in (
         FediaFeed(),
-        LemmyFeed(),
         HackerNewsFeed(),
+        LemmyFeed(),
         LobstersFeed(),
+        RedditFeed(),
     ):
         posts.extend(feed.new_posts())
 
     for post in sorted(posts):
         logger.info(post)
+        continue
         slack.notify(args.webhook_url, post)
         post.mark_as_notified()
 
