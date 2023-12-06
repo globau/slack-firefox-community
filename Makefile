@@ -1,4 +1,4 @@
-.PHONY: clean distclean docker docker-run format test test-formatting test-mypy test-pylint
+.PHONY: clean distclean docker docker-run format test test-formatting test-mypy test-pylint deploy
 
 py_files:=$(shell find src -type f -name '*.py')
 
@@ -34,8 +34,10 @@ distclean: clean
 
 # docker
 docker:
-	docker build --tag slack-firefox-community --network host .
+	docker build --tag slack-firefox-community --network host --platform linux/amd64 .
 
 docker-run: docker
-	@docker run --rm --tty --interactive --mount type=bind,source=$(PWD)/state,target=/app/state slack-firefox-community
+	docker run --rm --tty --interactive --mount type=bind,source=$(PWD)/state,target=/app/state slack-firefox-community
 
+deploy: docker
+	docker save slack-firefox-community | ssh lump 'docker load'
