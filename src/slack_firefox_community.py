@@ -47,7 +47,8 @@ def main() -> None:
         HackerNewsFeed(),
         LemmyFeed(),
         LobstersFeed(),
-        RedditFeed(),
+        RedditFeed("firefox"),
+        RedditFeed("mozillafirefox"),
     ):
         posts.extend(feed.new_posts())
 

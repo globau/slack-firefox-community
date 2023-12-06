@@ -34,10 +34,11 @@ class RedditPost(Post):
 
 
 class RedditFeed(Feed):
-    def __init__(self) -> None:
-        super().__init__("reddit-mozillafirefox")
+    def __init__(self, subreddit: str) -> None:
+        super().__init__(f"reddit-{subreddit}")
+        self.subreddit = subreddit
 
     def posts(self) -> list[Post]:
-        logger.info("fetching reddit.com/r/mozillafirefox")
-        rss = feedparser.parse("https://reddit.com/r/mozillafirefox.rss")
+        logger.info(f"fetching reddit.com/r/{self.subreddit}")
+        rss = feedparser.parse(f"https://reddit.com/r/{self.subreddit}.rss")
         return [RedditPost(self, entry) for entry in rss.entries]
