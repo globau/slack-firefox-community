@@ -3,7 +3,6 @@ import time
 from typing import Any
 
 import bs4
-import feedparser
 
 from cli import logger
 from feed import Feed, Post
@@ -40,5 +39,6 @@ class RedditFeed(Feed):
 
     def posts(self) -> list[Post]:
         logger.info(f"fetching reddit.com/r/{self.subreddit}")
-        rss = feedparser.parse(f"https://reddit.com/r/{self.subreddit}.rss")
-        return [RedditPost(self, entry) for entry in rss.entries]
+        entries = self.fetch_entries(f"https://reddit.com/r/{self.subreddit}.rss")
+        logger.info(f"  found {len(entries)} entries")
+        return [RedditPost(self, entry) for entry in entries]

@@ -6,14 +6,14 @@ py_files:=$(shell find src -type f -name '*.py')
 format: .git/py-format
 
 .git/py-format: venv/.updated $(py_files)
-	venv/bin/ruff --config .ruff.toml --cache-dir .git/ruff_cache --fix-only --exit-zero --show-fixes $(py_files)
+	venv/bin/ruff check --config .ruff.toml --cache-dir .git/ruff_cache --fix-only --exit-zero --show-fixes $(py_files)
 	venv/bin/black $(py_files)
 	venv/bin/isort --multi-line 3 --line-width 88 --trailing-comma --atomic $(py_files)
 	@touch $@
 
 # testing
 test: venv/.updated
-	venv/bin/ruff --config .ruff.toml --cache-dir .git/ruff_cache $(py_files)
+	venv/bin/ruff check --config .ruff.toml --cache-dir .git/ruff_cache $(py_files)
 	venv/bin/black --check $(py_files)
 	venv/bin/isort --multi-line 3 --line-width 88 --trailing-comma --check-only $(py_files)
 	@echo all tests passed

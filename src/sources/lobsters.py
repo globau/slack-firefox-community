@@ -2,8 +2,6 @@ import re
 import time
 from typing import Any
 
-import feedparser
-
 from cli import logger
 from feed import Feed, Post
 
@@ -31,5 +29,6 @@ class LobstersFeed(Feed):
 
     def posts(self) -> list[Post]:
         logger.info("fetching lobsters")
-        rss = feedparser.parse("https://lobste.rs/newest.rss")
-        return [LobstersPost(self, entry) for entry in rss.entries if _include(entry)]
+        entries = self.fetch_entries("https://lobste.rs/newest.rss")
+        logger.info(f"  found {len(entries)} entries")
+        return [LobstersPost(self, entry) for entry in entries if _include(entry)]

@@ -1,8 +1,6 @@
 import time
 from typing import Any
 
-import feedparser
-
 from cli import logger
 from feed import Feed, Post
 
@@ -28,5 +26,6 @@ class LemmyFeed(Feed):
 
     def posts(self) -> list[Post]:
         logger.info("fetching lemmy.ml/c/firefox")
-        rss = feedparser.parse("https://lemmy.ml/feeds/c/firefox.xml?sort=New")
-        return [LemmyPost(self, entry) for entry in rss.entries]
+        entries = self.fetch_entries("https://lemmy.ml/feeds/c/firefox.xml?sort=New")
+        logger.info(f"  found {len(entries)} entries")
+        return [LemmyPost(self, entry) for entry in entries]

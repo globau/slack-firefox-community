@@ -26,8 +26,6 @@ select = [
 
 ignore = [
     "A003", # builtin-attribute-shadowing
-    "ANN101", # missing-type-self
-    "ANN102", # missing-type-cls
     "ANN401", # any-type
     "B904", # raise-without-from-inside-except
     "E501", # line-too-long

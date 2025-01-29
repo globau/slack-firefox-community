@@ -3,6 +3,9 @@ import functools
 import json
 from datetime import datetime
 from pathlib import Path
+from urllib import request
+
+import feedparser
 
 
 @functools.total_ordering
@@ -64,6 +67,16 @@ class Feed:
     def _save_published(self, published: dict[str, str]) -> None:
         with self.state_file.open(mode="w") as f:
             json.dump(published, f, indent=True, sort_keys=True)
+
+    @staticmethod
+    def fetch_entries(url: str) -> list[dict]:
+        req = request.Request(
+            url,
+            headers={"User-Agent": "slack-firefox-community/1.0"},
+        )
+        with request.urlopen(req) as response:
+            rss = feedparser.parse(response.read().decode())
+        return rss.entries
 
     def new_posts(self) -> list[Post]:
         published = self._load_published()

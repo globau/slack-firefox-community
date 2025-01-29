@@ -1,8 +1,6 @@
 import time
 from typing import Any
 
-import feedparser
-
 from cli import logger
 from feed import Feed, Post
 
@@ -26,5 +24,6 @@ class FediaFeed(Feed):
 
     def posts(self) -> list[Post]:
         logger.info("fetching fedia.io/m/firefox")
-        rss = feedparser.parse("https://fedia.io/rss?magazine=firefox")
-        return [FediaPost(self, entry) for entry in rss.entries]
+        entries = self.fetch_entries("https://fedia.io/rss?magazine=firefox")
+        logger.info(f"  found {len(entries)} entries")
+        return [FediaPost(self, entry) for entry in entries]

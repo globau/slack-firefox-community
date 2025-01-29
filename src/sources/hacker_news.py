@@ -3,8 +3,6 @@ import time
 import urllib.parse as url_parse
 from typing import Any
 
-import feedparser
-
 from cli import logger
 from feed import Feed, Post
 
@@ -34,5 +32,6 @@ class HackerNewsFeed(Feed):
 
     def posts(self) -> list[Post]:
         logger.info("fetching hacker-news")
-        rss = feedparser.parse("https://news.ycombinator.com/rss")
-        return [HackerNewsPost(self, entry) for entry in rss.entries if _include(entry)]
+        entries = self.fetch_entries("https://news.ycombinator.com/rss")
+        logger.info(f"  found {len(entries)} entries")
+        return [HackerNewsPost(self, entry) for entry in entries if _include(entry)]

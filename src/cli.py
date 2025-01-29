@@ -100,7 +100,7 @@ def main(main_func: Callable) -> None:
                 logger.error(e.strerror or e)
         sys.exit(1)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         # only show stack when debugging
         if logger.isEnabledFor(logging.DEBUG):
             logger.exception(e)
