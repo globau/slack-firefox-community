@@ -14,7 +14,7 @@ from sources.reddit import RedditFeed
 
 def webhook_type(arg: str) -> str | None:
     if arg == "DEBUG":
-        return None
+        return arg
     url = url_parse.urlparse(arg)
     if (
         url.scheme != "https"
