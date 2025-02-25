@@ -6,24 +6,30 @@ py_files:=$(shell find src -type f -name '*.py')
 format: .git/py-format
 
 .git/py-format: venv/.updated $(py_files)
-	venv/bin/ruff check --config .ruff.toml --cache-dir .git/ruff_cache --fix-only --exit-zero --show-fixes $(py_files)
-	venv/bin/black $(py_files)
-	venv/bin/isort --multi-line 3 --line-width 88 --trailing-comma --atomic $(py_files)
+	venv/bin/ruff check --fix-only --unsafe-fixes --exit-zero --show-fixes $(py-files)
+	venv/bin/ruff format $(py-files)
 	@touch $@
 
 # testing
 test: venv/.updated
-	venv/bin/ruff check --config .ruff.toml --cache-dir .git/ruff_cache $(py_files)
-	venv/bin/black --check $(py_files)
-	venv/bin/isort --multi-line 3 --line-width 88 --trailing-comma --check-only $(py_files)
+	venv/bin/ruff check $(py-files)
+	venv/bin/ruff format --check $(py-files)
 	@echo all tests passed
 
 # virtual env
-venv/.updated: requirements.txt requirements-test.txt
-	@[ -e venv/bin/python ] || python3 -m venv venv
-	venv/bin/pip install --upgrade --disable-pip-version-check pip wheel
-	venv/bin/pip install --upgrade --disable-pip-version-check --requirement requirements-test.txt --requirement requirements.txt
+venv/.updated: venv/bin/python requirements.txt requirements-test.txt
+	venv/bin/pip-sync requirements.txt requirements-test.txt
 	@touch $@
+
+venv/bin/python:
+	python3.11 -m venv venv
+	venv/bin/pip install -U pip wheel pip-tools --disable-pip-version-check
+
+requirements.txt: venv/bin/python requirements.in
+	venv/bin/pip-compile requirements.in --output-file requirements.txt --strip-extras --quiet --no-header --annotation-style line
+
+requirements-test.txt: venv/bin/python requirements-test.in
+	venv/bin/pip-compile requirements-test.in --output-file requirements-test.txt --strip-extras --quiet --no-header --annotation-style line
 
 # cleaning
 clean:
