@@ -45,4 +45,5 @@ def notify(url: str, post: Post) -> None:
     except OSError as e:
         # transient error, bail out but don't treat this as an error
         logger.info(f"failed to post to slack: {e}")
+        logger.info(json.dumps(payload, indent=2, sort_keys=True))
         sys.exit(0)
