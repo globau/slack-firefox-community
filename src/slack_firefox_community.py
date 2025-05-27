@@ -7,7 +7,6 @@ import slack
 from cli import logger
 from sources.fedia import FediaFeed
 from sources.hacker_news import HackerNewsFeed
-from sources.lemmy import LemmyFeed
 from sources.lobsters import LobstersFeed
 from sources.reddit import RedditFeed
 
@@ -45,7 +44,6 @@ def main() -> None:
     for feed in (
         FediaFeed(),
         HackerNewsFeed(),
-        LemmyFeed(),
         LobstersFeed(),
         RedditFeed("firefox"),
         RedditFeed("mozillafirefox"),
